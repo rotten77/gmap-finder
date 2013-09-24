@@ -19,59 +19,70 @@ if($out=="json") {
 		<![endif]-->
 	</head>
 <body>
-<div id="form">
 <div class="container">
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
+		<div class="col-md-4">
 			<form class="form-inline" id="frm-q">
-				<div class="form-group col-lg-10">
-					<input type="text" class="form-control input-lg" size="50" name="q" id="q" value="<?php echo $q; ?>" placeholder="Address&hellip;" />	
+				<div class="form-group">
+					<input type="text" class="form-control input-lg" size="20" name="q" id="q" value="<?php echo $q; ?>" placeholder="Address&hellip;" />	
 				</div>
 				<button type="submit" class="btn btn-default btn-lg"><i class="glyphicon glyphicon-search"></i></button>
 			</form>
+
+			<div id="result">
+					<div class="panel panel-default">
+						<div class="panel-body">
+						<form class="form-vertical">
+							<h4>DEC</h4>
+							<div class="form-group col-lg-6">
+								<label for="gsp_lat">Lat</label>
+								<input type="text" id="gps_lat" name="gps_lat" class="form-control" />
+							</div>
+
+							<div class="form-group col-lg-6">
+								<label for="gps_lng">Lng</label>
+								<input type="text" id="gps_lng" name="gps_lng" class="form-control" />
+							</div>
+
+							<div class="form-group col-lg-12">
+								<label for="gps_ll">Lat+Lng</label>
+								<input type="text" id="gps_ll" name="gps_ll" class="form-control" />
+							</div>
+							<hr />
+							<h4>DMS</h4>
+							<div class="form-group col-lg-6">
+								<label for="gsp_lat_format">Lat</label>
+								<input type="text" id="gps_lat_format" name="gps_lat_format" class="form-control" />
+							</div>
+
+							<div class="form-group col-lg-6">
+								<label for="gps_lng_format">Lng</label>
+								<input type="text" id="gps_lng_format" name="gps_lng_format" class="form-control" />
+							</div>
+
+							<div class="form-group col-lg-12">
+								<label for="gps_ll_format">Lat+Lng</label>
+								<input type="text" id="gps_ll_format" name="gps_ll_format" class="form-control" />
+							</div>					
+						</form>
+						</div>
+
+					</div>
+			</div>
 		</div>
-	</div>
-	
-	<div class="row" id="result">
-		<div class="col-md-4 col-md-offset-4">
-			<div class="panel panel-default">
-				<div class="panel-body">
-				<form class="form-vertical">
-					<div class="form-group col-lg-6">
-						<label for="gsp_lat">Lat</label>
-						<input type="text" id="gps_lat" name="gps_lat" class="form-control" />
-					</div>
-
-					<div class="form-group col-lg-6">
-						<label for="gps_lng">Lng</label>
-						<input type="text" id="gps_lng" name="gps_lng" class="form-control" />
-					</div>
-
-					<div class="form-group col-lg-12">
-						<label for="gps_ll">Lat+Lng</label>
-						<input type="text" id="gps_ll" name="gps_ll" class="form-control" />
-					</div>
-
-					<!--<div class="form-group col-lg-6">
-						<label for="gps_format">Format</label>
-						<input type="text" id="gps_format" name="gps_format" class="form-control" />
-					</div>-->
-					
-				</form>
-				</div>
-
+		
+		<div class="col-md-8">
+			<div id="map">
+				<noscript>
+					<p>Enable JS</p>
+				</noscript>
 			</div>
 		</div>
 	</div>
-</div>
 
 </div>
 
-<div id="map">
-	<noscript>
-		<p>Enable JS</p>
-	</noscript>
-</div>
+
 
 <script src="./bootstrap/js/jquery.js"></script>
 <script src="./bootstrap/js/bootstrap.min.js"></script>
@@ -94,6 +105,14 @@ $(function(){
 							$('#gps_lat').val(marker.position.lat());
 							$('#gps_lng').val(marker.position.lng());
 							$('#gps_ll').val($('#gps_lat').val()+","+$('#gps_lng').val());
+
+							$.getJSON('./ajax.google-maps.php?convert='+marker.position.lat()+","+marker.position.lng(), function(data) {
+								$('#gps_lat_format').val(data['lat_format']);
+								$('#gps_lng_format').val(data['lng_format']);
+								$('#gps_ll_format').val($('#gps_lat_format').val()+","+$('#gps_lng_format').val());							
+							});
+
+
 					}); 
 					$('#result').show();
 			});
@@ -110,6 +129,10 @@ $(function(){
 						$('#gps_lat').val(data['lat']);
 						$('#gps_lng').val(data['lng']);
 						$('#gps_ll').val($('#gps_lat').val()+","+$('#gps_lng').val());
+
+							$('#gps_lat_format').val(data['lat_format']);
+							$('#gps_lng_format').val(data['lng_format']);
+							$('#gps_ll_format').val($('#gps_lat_format').val()+","+$('#gps_lng_format').val());
 						
 
 						var gpslatlng = new google.maps.LatLng($('#gps_lat').val(), $('#gps_lng').val());
