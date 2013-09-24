@@ -7,8 +7,8 @@ Simply find GPS from address. Live app here: http://apps.rotten77.cz/gmap-finder
 
 ### Find "Praha"
 
-<a href="http://apps.rotten77.cz/gmap-finder/?q=Praha">http://apps.rotten77.cz/gmap-finder/?q=Praha</a>
+<code>http://apps.rotten77.cz/gmap-finder/?q=Praha,Václavské náměstí</code>
 
 ### Find "Praha" and return JSON
 
-<a href="http://apps.rotten77.cz/gmap-finder/?q=Praha&amp;out=json">http://apps.rotten77.cz/gmap-finder/?q=Praha<strong>&out=json</strong></a>
+<code>http://apps.rotten77.cz/gmap-finder/?q=Praha,Václavské náměstí&out=json</code>
