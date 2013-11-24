@@ -17,6 +17,10 @@ if($out=="json") {
 		<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
+<?php
+	// Google Analytics tracking on my site
+	if(preg_match("/rotten77/", $_SERVER['SERVER_NAME'])) include dirname(__FILE__) . "/../ga.html";
+?>
 	</head>
 <body>
 <div class="container">
@@ -43,6 +47,8 @@ if($out=="json") {
 								<label for="gps_lng">Lng</label>
 								<input type="text" id="gps_lng" name="gps_lng" class="form-control" />
 							</div>
+							
+							<div class="clearfix"></div>
 
 							<div class="form-group col-lg-12">
 								<label for="gps_ll">Lat+Lng</label>
@@ -59,6 +65,7 @@ if($out=="json") {
 								<label for="gps_lng_format">Lng</label>
 								<input type="text" id="gps_lng_format" name="gps_lng_format" class="form-control" />
 							</div>
+							<div class="clearfix"></div>
 
 							<div class="form-group col-lg-12">
 								<label for="gps_ll_format">Lat+Lng</label>
@@ -155,9 +162,13 @@ $(function(){
 
 	});
 
+	$('input[type="text"]').click(function(){
+		$(this).select();
+	});
+
 
 });
-</script>	
+</script>
 </body>
 </html>
 
