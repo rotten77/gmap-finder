@@ -70,7 +70,14 @@ if($out=="json") {
 							<div class="form-group col-lg-12">
 								<label for="gps_ll_format">Lat+Lng</label>
 								<input type="text" id="gps_ll_format" name="gps_ll_format" class="form-control" />
-							</div>					
+							</div>
+							
+							<h4>Address</h4>
+
+							<div class="form-group col-lg-12">
+								<label for="formatted_address">Formatted Address</label>
+								<textarea  id="formatted_address" name="formatted_address" class="form-control" cols="30" rows="3"></textarea>
+							</div>	
 						</form>
 						</div>
 
@@ -135,6 +142,8 @@ $(function(){
 						$('#result').show();
 						$('#gps_lat').val(data['lat']);
 						$('#gps_lng').val(data['lng']);
+
+						$('#formatted_address').val(data['formatted_address']);
 						$('#gps_ll').val($('#gps_lat').val()+","+$('#gps_lng').val());
 
 							$('#gps_lat_format').val(data['lat_format']);

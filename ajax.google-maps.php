@@ -36,10 +36,13 @@ if(isset($_GET['convert'])) {
 $adresa = isset($_GET['q']) ? trim($_GET['q']) : null;
 
 if(is_null($adresa)) {
-	$return['error'] = "Nebyla zadána adresa";
+	$return['error'] = "Specify address";
 } else {
 
-$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($adresa)."&sensor=false";
+		/**
+		 * GPS
+		 */
+		$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($adresa)."&sensor=false";
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -65,9 +68,41 @@ $url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($adresa
 
 			// $return['lat_lng'] = $return['lat'].",".$return['lng'];
 
+				/**
+				 * Address
+				 */
+				$url = "http://maps.google.com/maps/api/geocode/json?latlng=".urlencode($return['lat'].",".$return['lng'])."&sensor=false";
+
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_HEADER, 0); 
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);	
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language:cs-CZ,cs;q=0.8'));
+				$json = curl_exec($ch);
+				curl_close($ch);
+				$result = json_decode($json, true);
+
+				if(isset($result['results'][0]['formatted_address'])) {
+					$formatedArr = explode(",", $result['results'][0]['formatted_address']);
+					if(count($formatedArr)>0) {
+						foreach($formatedArr as $key=>$val) {
+							$val = trim($val);
+
+							if($val=="") unset($formatedArr[$key]);
+							else $formatedArr[$key] = $val;
+						}
+					}
+					$return['formatted_address'] = (count($formatedArr)>0 ? implode("\n", $formatedArr) : "");
+					// $return['address_html'] = str_replace(",", "<br />", $result['results'][0]['formatted_address']);
+				} else {
+					$return['formatted_address'] = "";
+				}
+
+
 		} else {
-			$return['error'] = "Adresa nenalezena";
+			$return['error'] = "Address not found";
 		}
+
 
 }
 
